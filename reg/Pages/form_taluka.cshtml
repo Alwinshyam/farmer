@@ -1,0 +1,75 @@
+﻿@page
+@model reg.Pages.form_talukaModel
+@{
+    ViewData["Title"] = "Manage Talukas";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<!-- Taluka Form -->
+<form method="post">
+    <div class="form-group">
+        <label for="stateId">State</label>
+        <select id="stateId" name="StateId" class="form-control">
+            <option value="">Select State</option>
+            @foreach (var state in Model.States)
+            {
+                <option value="@state.StateId" @(Model.StateId == state.StateId ? "selected" : "")>@state.StateEn</option>
+            }
+        </select>
+        <span asp-validation-for="StateId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="districtId">District</label>
+        <select id="districtId" name="DistrictId" class="form-control">
+            <option value="">Select District</option>
+            @foreach (var district in Model.Districts)
+            {
+                @* Correct usage with Razor block *@
+                @{
+                    var isSelected = Model.DistrictId == district.DistrictId ? "selected" : "";
+                }
+                <option value="@district.DistrictId" @isSelected>@district.DistrictEn</option>
+            }
+        </select>
+        <span asp-validation-for="DistrictId" class="text-danger"></span>
+    </div>
+
+    <!-- Rest of the form -->
+
+</form>
+
+<!-- Taluka Table -->
+<h2>Existing Talukas</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name (English)</th>
+            <th>Name (Tamil)</th>
+            <th>District</th>
+            <th>State</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var taluka in Model.Talukas)
+        {
+            <tr>
+                <td>@taluka.TalukaId</td>
+                <td>@taluka.TalukaEn</td>
+                <td>@taluka.TalukaTam</td>
+                <td>@taluka.District.DistrictEn</td>
+                <td>@taluka.State.StateEn</td>
+                <td>
+                    <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#editModal" data-id="@taluka.TalukaId" data-en="@taluka.TalukaEn" data-tam="@taluka.TalukaTam" data-district="@taluka.District.DistrictId" data-state="@taluka.State.StateId">Edit</a>
+                    <form method="post" asp-page-handler="Delete" style="display:inline">
+                        <input type="hidden" name="talukaId" value="@taluka.TalukaId" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

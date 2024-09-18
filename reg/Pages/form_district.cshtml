@@ -1,0 +1,386 @@
+﻿@page
+@model reg.Pages.form_districtModel
+@{
+    ViewData["Title"] = "Form District";
+}
+<!DOCTYPE html>
+<html lang="en" class="has-aside-left has-aside-mobile-transition has-navbar-fixed-top has-aside-expanded">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/main.min.css">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            .table th, .table td {
+                border: 1px solid #ddd;
+                padding: 8px; /* Reduced padding */
+                text-align: center; /* Center align text */
+            }
+
+            .table th {
+                background-color: #0056b3;
+                color: white;
+            }
+
+            .table tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            .table tr:nth-child(odd) {
+                background-color: #e6f0ff;
+            }
+
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+            .form-group .input-container {
+                flex: 1;
+                min-width: 150px;
+                margin-right: 10px;
+            }
+
+                .form-group .input-container:last-child {
+                    margin-right: 0;
+                }
+
+            .form-group input[type="text"], .form-group select {
+                width: 100%;
+                padding: 8px;
+                font-size: 14px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+        .btn {
+            padding: 8px 20px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .btn:hover {
+                background-color: #004085;
+            }
+
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0056b3;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .action-buttons .btn {
+            padding: 4px 8px; /* Reduced padding */
+            font-size: 12px; /* Smaller font size */
+            margin: 0; /* Remove margin */
+        }
+
+        #grid2 {
+            display: none; /* Initially hidden */
+        }
+
+        /* Media queries for responsive layout */
+        media (max-width: 768px) {
+            .form-group
+
+        {
+            flex-direction: column;
+        }
+
+        .form-group .input-container {
+            margin-right: 0;
+            margin-bottom: 10px;
+        }
+
+            .form-group .input-container:last-child {
+                margin-bottom: 0;
+            }
+
+        }
+
+        /* Grid layout for state and add button */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        /* Display selected state in a read-only format */
+        .selected-state-display {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f2f2f2;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <aside class="aside is-placed-left is-expanded">
+            <div class="aside-tools">
+                <div class="aside-tools-label">
+                    <span><b>Admin</b> Dashboard</span>
+                </div>
+            </div>
+            <div class="menu is-menu-main">
+                <p class="menu-label">General</p>
+                <ul class="menu-list">
+                    <li>
+                        <a href="/Home" class="has-icon">
+                            <span class="icon"><i class="bi bi-house-door"></i></span>
+                            <span class="menu-item-label">Home</span>
+                        </a>
+                    </li>
+                </ul>
+                <p class="menu-label">Examples</p>
+                <ul class="menu-list">
+                    <li class="has-dropdown">
+                        <a class="has-icon">
+                            <span class="icon"><i class="bi bi-list"></i></span>
+                            <span class="menu-item-label">Master</span>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="/form_state"><span>State</span></a></li>
+                            <li><a href="/form_district"><span>District</span></a></li>
+                            <li><a href="/taluk"><span>Taluk</span></a></li>
+                            <li><a href="/commodity"><span>Commodity</span></a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <p class="menu-label">About</p>
+            </div>
+        </aside>
+
+        <!-- Header -->
+        <section class="hero is-hero-bar">
+            <div class="hero-body">
+                <div class="level">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <h1 class="title">District</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="container">
+            <div class="header"></div>
+            <div class="card">
+                <div class="card-body">
+                    <section class="container">
+                        <div class="header"></div>
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Grid 1: State Selection, District Table, and Add Button -->
+                                <div id="grid1">
+                                    <div class="grid-container">
+                                        <select id="state_select_grid" name="StateId" class="form-control" onchange="filterDistricts(); updateSelectedState()" required>
+                                            <option value="">Select State</option>
+                                            @foreach (var state in Model.States)
+                                            {
+                                                <option value="@state.StateId">@state.StateEn</option>
+                                            }
+                                        </select>
+                                        <button type="button" class="btn btn-primary" onclick="showDistrictForm()">Add State</button>
+                                    </div>
+                                    <div class="selected-state-display" id="selectedStateDisplay">Selected State: None</div>
+
+                                    <!-- District Table -->
+                                    <div id="districtTable" style="display: none;">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>SNo</th>
+                                                    <th>District (English)</th>
+                                                    <th>District (Tamil)</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    int serialNumber = 1;
+                                                    foreach (var district in Model.Districts)
+                                                    {
+                                                        <tr data-district-id="@district.DistrictId" data-state-id="@district.StateId">
+                                                            <td>@serialNumber</td>
+                                                            <td>@district.DistrictEn</td>
+                                                            <td>@district.DistrictTam</td>
+                                                            <td class="action-buttons">
+                                                                <button type="button" class="btn btn-primary" onclick="editDistrict(@district.DistrictId, @district.StateId, '@district.DistrictEn', '@district.DistrictTam')"><i class="bi bi-pen"></i></button>
+                                                                <button type="button" class="btn btn-danger" onclick="deleteDistrict(@district.DistrictId)"><i class="bi bi-trash"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                        serialNumber++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Grid 2: District Form (initially hidden) -->
+                                <div id="grid2" style="display: none;">
+                                    <!-- District Form -->
+                                    <form method="post" id="districtForm" action="/form_district">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="DistrictId" id="districtId" value="@Model.DistrictId">
+                                        <input type="hidden" id="hiddenStateId" name="StateId" value="@Model.StateId">
+                                        <div class="form-group">
+                                            <div class="input-container">
+                                                <select id="state_select" name="StateId" class="form-control" disabled>
+                                                    <option value="">Select State</option>
+                                                    @foreach (var state in Model.States)
+                                                    {
+                                                        <option value="@state.StateId">@state.StateEn</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="input-container">
+                                                <input type="text" id="district_en" name="DistrictEn" placeholder="District (English)" required>
+                                            </div>
+                                            <div class="input-container">
+                                                <input type="text" id="district_tam" name="DistrictTam" placeholder="District (Tamil)" required>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <button type="button" class="btn btn-secondary" onclick="hideDistrictForm()">Back</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <script>
+                    function showDistrictForm() {
+                        var selectedStateId = document.getElementById('state_select_grid').value;
+                        if (selectedStateId === '') {
+                            alert('Please select a state first.');
+                            return;
+                        }
+
+                        document.getElementById('grid1').style.display = 'none';
+                        document.getElementById('grid2').style.display = 'block';
+                        document.getElementById('hiddenStateId').value = selectedStateId;
+
+                        var stateSelect = document.getElementById('state_select');
+                        stateSelect.value = selectedStateId;
+                        stateSelect.disabled = true;
+                    }
+
+                    function hideDistrictForm() {
+                        document.getElementById('grid1').style.display = 'block';
+                        document.getElementById('grid2').style.display = 'none';
+                    }
+
+                    function updateSelectedState() {
+                        var selectedStateId = document.getElementById('state_select_grid').value;
+                        var stateSelectGrid = document.getElementById('state_select_grid');
+                        var selectedStateText = stateSelectGrid.options[stateSelectGrid.selectedIndex].text;
+                        var selectedStateDisplay = document.getElementById('selectedStateDisplay');
+
+                        if (selectedStateId === '') {
+                            selectedStateDisplay.innerHTML = 'Selected State: None';
+                        } else {
+                            selectedStateDisplay.innerHTML = 'Selected State: ' + selectedStateText;
+                        }
+                    }
+
+                    function filterDistricts() {
+                        var selectedStateId = document.getElementById('state_select_grid').value;
+                        var districtTable = document.getElementById('districtTable');
+                        var districtRows = document.querySelectorAll('#districtTable tbody tr');
+
+                        if (selectedStateId === '') {
+                            districtTable.style.display = 'none';
+                        } else {
+                            districtTable.style.display = 'block';
+                        }
+
+                        var serialNumber = 1;
+
+                        districtRows.forEach(function (row) {
+                            var rowStateId = row.getAttribute('data-state-id');
+                            if (selectedStateId === '' || rowStateId === selectedStateId) {
+                                row.style.display = '';
+                                row.cells[0].textContent = serialNumber++;
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
+
+                        updateSelectedState();
+                    }
+
+                    function editDistrict(districtId, stateId, districtEn, districtTam) {
+                        document.getElementById('grid1').style.display = 'none';
+                        document.getElementById('grid2').style.display = 'block';
+
+                        document.getElementById('districtId').value = districtId;
+                        document.getElementById('hiddenStateId').value = stateId;
+
+                        var stateSelect = document.getElementById('state_select');
+                        stateSelect.value = stateId;
+                        stateSelect.disabled = true;
+
+                        document.getElementById('district_en').value = districtEn;
+                        document.getElementById('district_tam').value = districtTam;
+                    }
+
+                    function deleteDistrict(districtId) {
+                        if (confirm('Are you sure you want to delete this district?')) {
+                            var form = document.getElementById('districtForm');
+                            form.action = '/form_district?handler=Delete'; // Ensure correct handler for delete
+                            document.getElementById('districtId').value = districtId;
+                            form.submit(); // Submit the form for delete
+                        }
+                    }
+                    // Toggle menu dropdown
+                    $(document).ready(function () {
+                        $('.has-dropdown > a').on('click', function (e) {
+                            e.preventDefault();
+                            $(this).next('.submenu').toggle();
+                        });
+                    });
+                </script>
+</body>
+</html>
